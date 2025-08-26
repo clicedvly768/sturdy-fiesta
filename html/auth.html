@@ -1,0 +1,107 @@
+<!-- auth.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация Max Messenger</title>
+    <style>
+        /* Стили остаются такими же */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* ... остальные стили ... */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Авторизация Max Messenger</h1>
+
+        <div class="instructions">
+            <h3>Как получить токен:</h3>
+            <div class="step">1. Откройте веб-версию Max в браузере</div>
+            <div class="step">2. Авторизуйтесь в своем аккаунте</div>
+            <div class="step">3. Откройте Инструменты разработчика (F12)</div>
+            <div class="step">4. Перейдите во вкладку "Сеть" (Network)</div>
+            <div class="step">5. Обновите страницу (F5)</div>
+            <div class="step">6. Найдите любой запрос к API Max</div>
+            <div class="step">7. В заголовках запроса найдите Authorization token</div>
+            <div class="step">8. Скопируйте его и вставьте в поле ниже</div>
+        </div>
+
+        <form id="authForm">
+            <div class="form-group">
+                <label for="token">Токен авторизации Max:</label>
+                <input type="text" id="token" name="token" required placeholder="Введите токен...">
+            </div>
+
+            <div class="form-group">
+                <label for="userId">ID пользователя Max:</label>
+                <input type="text" id="userId" name="userId" required placeholder="Введите ваш ID...">
+            </div>
+
+            <button type="submit">Сохранить данные</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const token = document.getElementById('token').value;
+            const userId = document.getElementById('userId').value;
+            const resultDiv = document.getElementById('result');
+
+            try {
+                // Отправляем данные на Python-сервер
+                const response = await fetch(`http://localhost:8080/save?token=${encodeURIComponent(token)}&user_id=${encodeURIComponent(userId)}`);
+
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>Успех!</strong> Токен сохранен.<br>
+                        Вы можете закрыть эту страницу и запустить бота.
+                    `;
+                } else {
+                    throw new Error('Ошибка сервера: ' + response.status);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>Ошибка!</strong> Не удалось сохранить токен:<br>
+                    ${error.message}
+                `;
+            }
+        });
+
+        // При загрузке страницы проверяем, есть ли уже сохраненный токен
+        window.addEventListener('load', function() {
+            // Можно добавить логику для загрузки ранее сохраненных данных
+            // если они есть в localStorage
+            const savedToken = localStorage.getItem('maxAuthToken');
+            const savedUserId = localStorage.getItem('maxUserId');
+
+            if (savedToken) {
+                document.getElementById('token').value = savedToken;
+            }
+
+            if (savedUserId) {
+                document.getElementById('userId').value = savedUserId;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инструкции по настройке</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2688eb;
+            text-align: center;
+        }
+        .step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .success-badge {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Инструкции по настройке бота</h1>
+
+        <div class="step">
+            <h3>1. Установите Node.js</h3>
+            <p>Скачайте и установите Node.js с официального сайта: <a href="https://nodejs.org/" target="_blank">https://nodejs.org/</a></p>
+        </div>
+
+        <div class="step">
+            <h3>2. Скачайте код бота</h3>
+            <p>Скачайте архив с кодом бота или клонируйте репозиторий:</p>
+            <code>git clone https://github.com/your-username/max-bridge.git</code>
+        </div>
+
+        <div class="step">
+            <h3>3. Установите зависимости</h3>
+            <p>Перейдите в папку с ботом и установите необходимые пакеты:</p>
+            <code>npm install</code>
+        </div>
+
+        <div class="step">
+            <h3>4. Настройте бота</h3>
+            <p>Создайте файл <code>.env</code> и добавьте в него настройки:</p>
+            <pre>
+MATRIX_HOMESERVER=https://matrix.example.com
+MATRIX_USER_ID=@max_bot:example.com
+MATRIX_ACCESS_TOKEN=your_matrix_access_token
+MATRIX_ROOM_ID=!room_id:example.com
+
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHAT_ID=your_telegram_chat_id
+            </pre>
+        </div>
+
+        <div class="step">
+            <h3>5. Запустите бота</h3>
+            <p>Запустите бота с помощью команды:</p>
+            <code>npm start</code>
+            <p>Или для разработки:</p>
+            <code>npm run dev</code>
+        </div>
+
+        <div class="step">
+            <h3>6. Проверьте работу</h3>
+            <p>Отправьте сообщение в Max и проверьте, что оно появляется в Matrix и Telegram.</p>
+        </div>
+
+        <div class="step">
+            <h3>Текущий статус авторизации <span class="success-badge">Успешно</span></h3>
+            <p>Ваш токен сохранен в браузере. Бот будет использовать его для доступа к Max.</p>
+            <p><strong>ID пользователя:</strong> <span id="userId"></span></p>
+            <button onclick="location.href='auth.html'">Изменить токен</button>
+        </div>
+    </div>
+
+    <script>
+        // Показываем сохраненный userId
+        document.getElementById('userId').textContent = localStorage.getItem('maxUserId') || 'Не указан';
+    </script>
+</body>
+</html>
